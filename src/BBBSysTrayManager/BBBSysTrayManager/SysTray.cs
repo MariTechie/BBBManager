@@ -115,6 +115,11 @@ namespace BBBSysTrayManager
             {
                 _stoppedTime = DateTime.Now;
                 verifyStoppedTimeProcessTimer.Start();
+                HideStopMenuItem();
+            }
+            else
+            {
+                HideStartMenuItem();
             }
         }
 
@@ -157,6 +162,7 @@ namespace BBBSysTrayManager
                 ShowBalloonTipText("Status Processo", "Iniciado com sucesso");
                 _stoppedTime = DateTime.MinValue;
                 verifyStoppedTimeProcessTimer.Stop();
+                HideStartMenuItem();
             }
 
             if (CurrentStatus == ServiceControllerStatus.Stopped)
@@ -164,6 +170,7 @@ namespace BBBSysTrayManager
                 ShowBalloonTipText("Status Processo", "Processo Encerrado");
                 _stoppedTime = DateTime.Now;
                 verifyStoppedTimeProcessTimer.Start();
+                HideStopMenuItem();
             }
 
             _trayIcon.Text = "BBBManager " + GetCurrentStatus();
@@ -212,6 +219,18 @@ namespace BBBSysTrayManager
             const string status = "Status: {0}";
 
             return string.Format(status, CurrentStatus.ToStatusString());
+        }
+
+        private void HideStartMenuItem()
+        {
+            _trayMenu.MenuItems[2].Visible = false;
+            _trayMenu.MenuItems[3].Visible = true;
+        }
+
+        private void HideStopMenuItem()
+        {
+            _trayMenu.MenuItems[3].Visible = false;
+            _trayMenu.MenuItems[2].Visible = true;
         }
 
         #endregion
